@@ -3,6 +3,7 @@ const express = require ("express");
 const axios = require("axios");
 const querystring = require("querystring");
 const jwt = require("jsonwebtoken");
+const User = require("./userModel");
 
 const router = express.Router();
 
@@ -43,8 +44,39 @@ router.get('/google/callback', async (req, res) => {
           Authorization: `Bearer ${accessToken}`
         }
       });
+      // console.log(userResponse)
   
       const userData = userResponse.data;
+
+      // Check if the user already exists
+      let user = await User.findOne({ googleId: userData.id });
+
+      if (!user) {
+          // If the user doesn't exist, create a new user
+          user = new User({
+              googleId: userData.id,
+              email: userData.email,
+              verifiedEmail: userData.verified_email,
+              name: userData.name,
+              givenName: userData.given_name,
+              familyName: userData.family_name,
+              picture: userData.picture,
+              prompts: [] // Initialize with an empty array
+          });
+
+          await user.save(); // Save the new user to the database
+      } else {
+          // Update user information if necessary
+          user.email = userData.email;
+          user.verifiedEmail = userData.verified_email;
+          user.name = userData.name;
+          user.givenName = userData.given_name;
+          user.familyName = userData.family_name;
+          user.picture = userData.picture;
+
+          await user.save(); // Save updates
+      }
+
 
       //CREATING JWT
       const jwtToken = jwt.sign({user:userData}, jwtSecret, {expiresIn: expiresIn});

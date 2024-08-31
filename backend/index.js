@@ -5,6 +5,12 @@ const authRoutes = require('./auth');
 const authenticateJWT = require('./authMiddleware');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const mongoose = require('mongoose');
+
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => console.log('Connected to MongoDB'))
+.catch((err) => console.error('Failed to connect to MongoDB:', err));
 
 app.use(cors({
   origin:process.env.FRONTEND_URL, // Specifies the frontend origin that can access the backend

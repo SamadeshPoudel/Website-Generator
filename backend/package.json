@@ -9,14 +9,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^7.12.1",
     "axios": "^1.7.4",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.3",
+    "mongoose": "^8.5.4",
+    "multer": "^1.4.4",
+    "multer-gridfs-storage": "^5.0.2",
+    "path": "^0.12.7",
     "querystring": "^0.2.1"
   }
 }
